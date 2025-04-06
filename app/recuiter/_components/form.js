@@ -5,22 +5,22 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createClient } from "@/utils/supabase/client";
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useRouter,} from 'next/navigation'
+import { useState, } from 'react'
 
 export const Form = () => {
   const router = useRouter()
-  const searchParams = useSearchParams()
+  // const searchParams = useSearchParams()
 
   // This will be assigned after the first render
   const [callbackUrl, setCallbackUrl] = useState('/recuiter/dashboard');
 
-  useEffect(() => {
-    const url = searchParams.get('callbackUrl');
-    if (url) {
-      setCallbackUrl(url);
-    }
-  }, [searchParams]);
+  // useEffect(() => {
+  //   const url = searchParams.get('callbackUrl');
+  //   if (url) {
+  //     setCallbackUrl(url);
+  //   }
+  // }, [searchParams]);
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
