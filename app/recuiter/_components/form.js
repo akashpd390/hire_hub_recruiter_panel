@@ -4,25 +4,33 @@ import { Alert } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {createClient} from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export const Form = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl') || '/recuiter/dashboard'
-  
+
+  // This will be assigned after the first render
+  const [callbackUrl, setCallbackUrl] = useState('/recuiter/dashboard');
+
+  useEffect(() => {
+    const url = searchParams.get('callbackUrl');
+    if (url) {
+      setCallbackUrl(url);
+    }
+  }, [searchParams]);
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  
+
   const onSubmit = async (e) => {
     e.preventDefault()
     setError('') // Reset error message
     const supabase_client = createClient();
     try {
-
       const { data, error: authError } = await supabase_client.auth.signInWithPassword({
         email,
         password,
