@@ -10,7 +10,7 @@ export async function middleware(request) {
     }
   } = await supabase.auth.getUser();
 
-  const isProtected = request.nextUrl.pathname.startsWith('/recuiter/dashboard')
+  const isProtected = request.nextUrl.pathname.startsWith('/recuiter/dashboard') || request.nextUrl.pathname.startsWith('/profile');
 
   if (!user && !request.nextUrl.pathname.startsWith('/recuiter')) {
     return NextResponse.redirect(new URL("/recuiter", request.url));
@@ -34,5 +34,6 @@ export const config = {
      */
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
     '/recuiter/dashboard/:path*',
+    '/profile/:path*'
   ],
 }
