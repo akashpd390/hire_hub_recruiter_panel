@@ -1,6 +1,5 @@
 'use client'
 
-// import { supabase_client } from "@/utils/supabase_config";
 import { useEffect, useState,} from "react";
 import { AddNewJobPost } from "./_components/add_new_job_post";
 import JobPostList from "./_components/job_post_list";

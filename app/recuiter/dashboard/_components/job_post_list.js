@@ -1,16 +1,37 @@
 "use client"
 
 
-import React from "react";
+import React, { useEffect } from "react";
 import TempComp from "./temp.js";
 import { useJobPostsByUser} from "@/lib/hooks/useJobPostsHook.js"
+import { createClient } from "@/utils/supabase/client.js";
+
+import { useRouter } from 'next/navigation'
 
 
 function JobPostList() {
 
+    const supabase = createClient();
+    const router = useRouter();
+
     const { jobPosts, loading } = useJobPostsByUser();
 
+    useEffect(() => {
+        const channels = supabase.channel('custom-all-channel')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'JobList' },
+          (payload) => {
+            router.refresh()
+          }
+        )
+        .subscribe()
+        return ()=> {
+            supabase.removeChannel(channels);
+        }
+        },
 
+     [supabase, router]);
 
     return (
         <div>

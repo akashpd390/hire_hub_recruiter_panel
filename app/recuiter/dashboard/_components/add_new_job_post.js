@@ -31,7 +31,7 @@ export const AddNewJobPost = () => {
   const [userId, setUserId] = useState(null)
 
   const supabase_client = createClient();
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -111,6 +111,7 @@ export const AddNewJobPost = () => {
       console.error('Error submitting job post:', error)
     } finally {
       setLoading(false)
+      router.refresh();
     }
   }
 

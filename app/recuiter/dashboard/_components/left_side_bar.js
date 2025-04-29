@@ -17,7 +17,7 @@ export default function LeftSidebar() {
           </Link>
         </li>
         <li>
-          <Link href="/recuiter/dashboard/messages" className="hover:bg-gray-700 p-2 rounded">Messages
+          <Link href="/recuiter/dashboard/connect" className="hover:bg-gray-700 p-2 rounded">Messages
           </Link>
         </li>      <li>
           <Link href="/recuiter/dashboard/profile" className="hover:bg-gray-700 p-2 rounded">Profile
