@@ -39,11 +39,11 @@ export const AddNewJobPost = () => {
       if (userData?.user) {
         setUserId(userData.user.id)
         const { data: profileData } = await supabase_client
-          .from('recuiter')
+          .from('recuiters')
           .select('organisation')
           .eq('id', userData.user.id)
           .single()
-        if (profileData) setCompanyName(profileData.company_name)
+        if (profileData) setCompanyName(profileData.organisation)
       }
     }
     fetchUserData()

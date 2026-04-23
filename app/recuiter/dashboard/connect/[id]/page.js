@@ -137,54 +137,94 @@ const ChatRoomPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-    {/* Header */}
-    <div className="p-4 bg-white shadow-md">
-      {user && (
-        <h1 className="text-xl font-semibold text-gray-800">
-          Chat with {user.first_name} {user.last_name}
-        </h1>
-      )}
-    </div>
-
-    {/* Messages */}
-    <div className="flex-1 overflow-y-auto p-4 space-y-2">
-      {messages.map((message) => {
-        const isSender = message.sender_id === recuiter?.id;
-        return (
-          <div
-            key={message.id}
-            className={`flex ${isSender ? 'justify-end' : 'justify-start'}`}
-          >
-            <div
-              className={`px-4 py-2 rounded-lg max-w-xs text-white ${
-                isSender ? 'bg-blue-500' : 'bg-gray-500'
-              }`}
-            >
-              <p className="text-sm">{message.content}</p>
-            </div>
+    <div className="flex flex-col h-[calc(100vh-6rem)] bg-zinc-50 rounded-2xl border border-zinc-200/60 shadow-sm overflow-hidden animate-in fade-in zoom-in-95 duration-500 max-w-5xl mx-auto">
+      {/* Header */}
+      <div className="p-4 bg-white shadow-sm border-b border-zinc-100 flex items-center justify-between z-10">
+        {user ? (
+          <div className="flex items-center gap-3">
+             <div className="relative">
+                <img 
+                  src={user.avatar || '/default-avatar.png'} 
+                  alt={user.first_name || 'User'} 
+                  className="w-10 h-10 rounded-full object-cover border border-zinc-200" 
+                  onError={(e) => { e.target.src = "https://ui-avatars.com/api/?name=" + encodeURIComponent((user.first_name || "User") + " " + (user.last_name || "")) + "&background=random" }} 
+                />
+                <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></div>
+             </div>
+             <div>
+                <h1 className="text-lg font-bold text-zinc-900 leading-tight">
+                  {user.first_name} {user.last_name}
+                </h1>
+                <p className="text-xs text-zinc-500">{user.email}</p>
+             </div>
           </div>
-        );
-      })}
-    </div>
+        ) : (
+          <div className="animate-pulse flex items-center gap-3">
+             <div className="w-10 h-10 bg-zinc-200 rounded-full"></div>
+             <div className="space-y-2">
+                <div className="h-4 w-32 bg-zinc-200 rounded"></div>
+                <div className="h-3 w-24 bg-zinc-200 rounded"></div>
+             </div>
+          </div>
+        )}
+      </div>
 
-    {/* Input */}
-    <div className="p-4 bg-white shadow-inner flex items-center gap-2">
-      <input
-        type="text"
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-        placeholder="Type a message"
-        className="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <button
-        onClick={handleSendMessage}
-        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-      >
-        Send
-      </button>
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-zinc-50/50">
+        {messages.length === 0 ? (
+           <div className="h-full flex flex-col items-center justify-center text-zinc-400">
+              <p className="text-4xl mb-3">👋</p>
+              <p className="text-sm">Say hello and start the conversation!</p>
+           </div>
+        ) : (
+          messages.map((message) => {
+            const isSender = message.sender_id === recuiter?.id;
+            return (
+              <div
+                key={message.id}
+                className={`flex ${isSender ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className={`px-5 py-3 rounded-2xl max-w-[75%] shadow-sm ${
+                    isSender ? 'bg-indigo-600 text-white rounded-br-sm' : 'bg-white text-zinc-800 border border-zinc-200/60 rounded-bl-sm'
+                  }`}
+                >
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      {/* Input */}
+      <div className="p-4 bg-white border-t border-zinc-100 pb-6 md:pb-4">
+        <form 
+          onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }}
+          className="flex items-center gap-3 max-w-4xl mx-auto"
+        >
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type your message here..."
+            className="flex-1 bg-zinc-50 border border-zinc-200 rounded-full px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-zinc-400"
+          />
+          <button
+            type="button"
+            onClick={handleSendMessage}
+            disabled={!newMessage.trim()}
+            className="bg-indigo-600 text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm shrink-0"
+          >
+             <span className="sr-only">Send</span>
+             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+             </svg>
+          </button>
+        </form>
+      </div>
     </div>
-  </div>
   );
 };
 

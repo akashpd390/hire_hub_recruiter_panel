@@ -12,6 +12,7 @@ const TempComp = ({jobPosts})=>{
     const router = useRouter();
     const onVeiw =()=>{
         router.push('/recuiter/dashboard/posts/' + jobPosts?.id);
+        
     }
 
     const onDelete = async () => {
